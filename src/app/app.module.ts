@@ -15,6 +15,12 @@ import {
   PreloadAllModules
 } from '@angular/router';
 
+import { StoreModule } from '@ngrx/store';
+import { todoReducer } from './todo/todo.reducers';
+
+import { EffectsModule } from '@ngrx/effects';
+import { TodoEffects } from './todo/todo.effects';
+
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -56,11 +62,13 @@ type StoreType = {
     NoContentComponent,
     XLargeDirective
   ],
-  imports: [ // import Angular's modules
+  imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    StoreModule.provideStore({ todo: todoReducer }),
+    EffectsModule.run(TodoEffects)
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
